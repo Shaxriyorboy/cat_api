@@ -1,0 +1,45 @@
+import 'dart:convert';
+
+UploadImage uploadImageFromJson(String str) => UploadImage.fromJson(json.decode(str));
+
+String uploadImageToJson(UploadImage data) => json.encode(data.toJson());
+
+class UploadImage {
+  UploadImage({
+    this.id,
+    this.url,
+    this.width,
+    this.height,
+    this.originalFilename,
+    this.pending,
+    this.approved,
+  });
+
+  String? id;
+  String? url;
+  int? width;
+  int? height;
+  String? originalFilename;
+  int? pending;
+  int? approved;
+
+  factory UploadImage.fromJson(Map<String, dynamic> json) => UploadImage(
+    id: json["id"],
+    url: json["url"],
+    width: json["width"],
+    height: json["height"],
+    originalFilename: json["original_filename"],
+    pending: json["pending"],
+    approved: json["approved"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "url": url,
+    "width": width,
+    "height": height,
+    "original_filename": originalFilename,
+    "pending": pending,
+    "approved": approved,
+  };
+}
