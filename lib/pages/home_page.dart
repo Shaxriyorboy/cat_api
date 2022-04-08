@@ -69,9 +69,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   _showUpload(String response) {
-    UploadImage image = Network.parseUpload(response);
     setState(() {
-      uploadImage.add(image);
+      uploadImage = Network.parseUpload(response);
     });
   }
 
@@ -87,6 +86,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     getList();
+    getUpload();
   }
 
   @override

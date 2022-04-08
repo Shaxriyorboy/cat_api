@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-UploadImage uploadImageFromJson(String str) => UploadImage.fromJson(json.decode(str));
+List<UploadImage> uploadFromJson(String str) => List<UploadImage>.from(json.decode(str).map((x) => UploadImage.fromJson(x)));
 
-String uploadImageToJson(UploadImage data) => json.encode(data.toJson());
+String uploadToJson(List<UploadImage> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class UploadImage {
   UploadImage({

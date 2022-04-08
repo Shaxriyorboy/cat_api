@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../service/http_service.dart';
+import 'main_page.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -32,15 +33,14 @@ class _DetailPageState extends State<DetailPage> {
     });
   }
 
-  _uploadImage() async {
-    await Network.MULTIPART(
-            Network.API_UPLOAD, file!.path, Network.paramsEmpty())
-        .then((value) => {
-              if (value != null)
-                {
-                  Navigator.of(context).pop(true),
-                }
-            });
+  void upload() async {
+    Network.MULTIPART(Network.API_UPLOAD, file!.path, Network.bodyUpload(file!.hashCode.toString())).then((value) {
+      if(value != null) {
+        print(value.toString());
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage()), (route) => route.isFirst);
+      } else {
+      }
+    });
   }
 
   @override
@@ -85,7 +85,7 @@ class _DetailPageState extends State<DetailPage> {
               height: 50,
               color: Colors.blue,
               onPressed: () {
-                _uploadImage();
+                upload();
               },
               child: Text(
                 "Upload",

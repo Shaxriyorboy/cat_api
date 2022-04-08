@@ -110,9 +110,17 @@ class Network {
   /* Http apis */
 
   static String API_LIST = "/v1/images/search";
-  static String API_UPLOAD_GET = "/v1/images";
-  static String API_UPLOAD = "/v1/images/upload/";
+  static String API_UPLOAD_GET = "/v1/images/";
+  static String API_UPLOAD = "/v1/images/upload";
   static String API_DELETE = "/v1/images/search/"; //{id}
+  static String API_SEARCH_BREED = "/v1/breeds/search";
+  static String API_GET_UPLOADS = "/v1/images/";
+
+  /* Http Body */
+  static Map<String, String> bodyUpload(String subId) {
+    Map<String, String> body = {'sub_id': subId};
+    return body;
+  }
 
   /* Http params */
   static Map<String, String> upload(String file){
@@ -152,6 +160,31 @@ class Network {
     return param;
   }
 
+  static Map<String, String> paramsSearch(String search, int pageNumber) {
+    Map<String, String> params = {};
+    params.addAll(
+        {'breed_ids': search, 'limit': '25', 'page': pageNumber.toString()});
+    return params;
+  }
+
+  static Map<String, String> paramsBreedSearch(String search) {
+    Map<String, String> params = {};
+    params.addAll({'q': search});
+    return params;
+  }
+
+  /* Http parsing */
+  static List<Cat> parseResponse(String response) {
+    List json = jsonDecode(response);
+    List<Cat> photos = List<Cat>.from(json.map((x) => Cat.fromJson(x)));
+    return photos;
+  }
+
+  static List<Breed> parseSearchBreed(String response) {
+    List json = jsonDecode(response);
+    List<Breed> categories = List<Breed>.from(json.map((x) => Breed.fromJson(x)));
+    return categories;
+  }
 
   /* Http parsing */
   static Cat parseEmpOne(String body){
@@ -165,8 +198,8 @@ class Network {
     return cats;
   }
 
-  static UploadImage parseUpload(String body){
-    UploadImage image = jsonDecode(body);
+  static List<UploadImage> parseUpload(String body){
+    List<UploadImage> image = uploadFromJson(body);
     return image;
   }
 }
